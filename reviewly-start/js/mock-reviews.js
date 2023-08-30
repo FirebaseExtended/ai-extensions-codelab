@@ -1,3 +1,19 @@
+/**
+ * Copyright 2023 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 const mockReviews = [
 	"This t-shirt is amazing! The fabric is soft and comfortable, and the design is eye-catching. I've received so many compliments wearing it. The fit is perfect, and it's true to size. I would highly recommend it to anyone looking for a stylish and comfortable t-shirt.",
 	"I love this t-shirt! The print quality is fantastic, and the colors are vibrant. It's a great addition to my wardrobe and has become one of my favorite shirts. The material is breathable and perfect for warm weather. The sizing chart was accurate, so it fits just right. Definitely worth every penny!",
