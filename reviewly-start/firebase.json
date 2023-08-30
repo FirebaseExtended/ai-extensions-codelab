@@ -1,0 +1,14 @@
+{
+  "emulators": {
+    "firestore": {
+      "port": 8080
+    },
+    "ui": {
+      "enabled": true
+    },
+    "singleProjectMode": true
+  },
+  "extensions": {
+    "firestore-palm-gen-text": "googlecloud/firestore-palm-gen-text@0.1.7"
+  }
+}

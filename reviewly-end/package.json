@@ -1,0 +1,12 @@
+{
+  "name": "Reviewly",
+  "private": true,
+  "version": "0.1.0",
+  "description": "A sample web app that summarizes reviews using the PaLM API and a Firebase AI extension.",
+  "scripts": {
+    "dev": "http-server"
+  },
+  "dependencies": {
+    "http-server": "^14.1.1"
+  }
+}

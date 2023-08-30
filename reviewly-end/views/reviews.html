@@ -1,0 +1,47 @@
+<h2>T-Shirt Reviews: Summarised by PaLM</h2>
+
+<button class="add-reviews">Add some mock reviews</button>
+
+{% if reviews.length === 0 %}
+<p>There are no reviews</p>
+{% else %}
+<div class="stats">
+	<p>
+		<strong>Average review reduction</strong>: {{averageReductionPercent}}%
+	</p>
+	<p>
+		<strong>Average product rating</strong>: {% for i in
+		range(averageRating) %} ⭐️ {% endfor %}
+	</p>
+</div>
+<ul>
+	{% for review in reviews %}
+	<li class="review__body">
+		{% if review.summary %}
+		<details {% if review.has_defect %}class="defect" {% endif %}>
+			<summary class="review__summary">
+				{{review.summary}}
+				<span class="rating">
+					{% for i in range(review.rating) %} ⭐️ {% endfor %}
+				</span>
+			</summary>
+			<p>{{review.originalReview}}</p>
+			<details>
+				<summary>Show PaLM prompt</summary>
+				<code>
+					Prompt: {{review.prompt}}
+					<hr />
+					Text: {{review.response}}
+				</code>
+			</details>
+		</details>
+		{% if review.reductionPercent %}
+		<span class="reduction-percent">
+			{{review.reductionPercent}}% smaller than original
+		</span>
+		{% endif %} {% else %} {{review.originalReview}} {% endif %}
+	</li>
+	{% endfor %}
+</ul>
+
+{% endif %}
