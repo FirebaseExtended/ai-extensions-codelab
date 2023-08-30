@@ -1,0 +1,111 @@
+* {
+	box-sizing: border-box;
+}
+
+.header {
+	background: #add8e6;
+	text-align: center;
+	padding: 20px;
+	font-size: 25px;
+	border-bottom: 13px solid orange;
+}
+
+body {
+	font-family: "Roboto", sans-serif;
+}
+
+.add-reviews {
+	font-size: 1rem;
+	padding: 14px;
+	cursor: pointer;
+}
+
+.container,
+.header {
+	max-width: 700px;
+	margin: 0 auto;
+}
+
+.container {
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+ul {
+	margin: 10px 0;
+	padding: 10px 0;
+}
+
+.review__body {
+	margin: 22px 0;
+	& details {
+		cursor: pointer;
+
+		& p {
+			font-style: italic;
+		}
+
+		& p {
+			margin-left: 2rem;
+		}
+
+		& details {
+			margin-left: 2rem;
+		}
+	}
+}
+
+li:not(:has(details)) {
+	list-style-type: none;
+}
+
+li:has(details) {
+	list-style-type: disclosure-closed;
+}
+
+li:has(details[open]) {
+	list-style-type: disclosure-open;
+}
+
+.review__summary::marker {
+	display: none;
+	content: none;
+}
+
+.defect summary {
+	text-decoration-style: dotted;
+	text-decoration-line: underline;
+}
+
+.rating {
+	margin-left: 10px;
+}
+
+.reduction-percent {
+	color: #868686;
+	border-radius: 1.75rem;
+	font-size: 13px;
+}
+
+details code {
+	margin-left: 4rem;
+}
+
+details details summary {
+	font-family: monospace;
+}
+
+.stats {
+	outline: 1px solid lightgrey;
+	padding: 5px;
+	display: inline-block;
+	float: right;
+
+	& p {
+		margin: 0;
+	}
+}
+
+h2 {
+	margin-bottom: 2rem;
+}

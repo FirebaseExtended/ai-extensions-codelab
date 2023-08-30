@@ -1,0 +1,250 @@
+* {
+	box-sizing: border-box;
+	padding: 0;
+	margin: 0;
+}
+
+body {
+	font-family: ui-sans-serif, system-ui, -apple-system;
+}
+
+ul {
+	list-style-type: none;
+}
+
+h2 {
+	font-weight: normal;
+}
+
+footer {
+	& button {
+		--tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1),
+			0 1px 2px -1px rgb(0 0 0 / 0.1);
+		--tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color),
+			0 1px 2px -1px var(--tw-shadow-color);
+		box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+			var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+		text-transform: uppercase;
+		font-size: 1rem;
+		outline: 0;
+		border: 0;
+		padding: 10px;
+		cursor: pointer;
+	}
+
+	& .button--cancel {
+		color: rgb(178, 193, 212);
+		background-color: white;
+	}
+
+	& .button--confirm {
+		background-color: rgb(255 111 0);
+		color: white;
+	}
+
+	& menu {
+		display: flex;
+		justify-content: flex-end;
+		padding: 20px 0;
+		gap: 20px;
+	}
+}
+
+header {
+	background-color: rgb(56 85 116);
+	color: white;
+	display: flex;
+	justify-content: space-between;
+	padding: 0.8rem;
+	align-items: center;
+	& img {
+		height: 2rem;
+	}
+
+	& ul {
+		display: none;
+		position: absolute;
+		width: 220px;
+		z-index: 99;
+	}
+	& a {
+		text-decoration: none;
+		color: white;
+	}
+}
+
+.menu {
+	display: inline-block;
+	position: relative;
+	padding: 15px 20px;
+	align-self: stretch;
+}
+
+.menu ul {
+	/* display: block; */
+	left: calc(-220px * 0.9);
+	color: rgb(42 72 101);
+	background-color: white;
+	box-shadow: 0 0 10px 0 rgb(0 0 0 / 50%);
+
+	& li {
+		padding: 10px;
+		border-bottom: 1px solid rgb(42 72 101 / 0.25);
+	}
+
+	& a {
+		font-weight: bold;
+		color: unset;
+	}
+
+	& li:has(a):hover {
+		background-color: rgb(42 72 101 / 0.05);
+	}
+
+	& a:visited {
+		color: unset;
+	}
+}
+
+.menu:hover ul {
+	display: block;
+}
+
+.profile {
+	display: flex;
+
+	& p {
+		display: flex;
+		align-items: center;
+	}
+}
+
+time {
+	font-size: 0.7rem;
+	margin-left: 0.5rem;
+}
+.messages-container {
+	flex: 3;
+	flex-basis: 66%;
+}
+.messages-list {
+	display: flex;
+	outline: 1px solid lightgray;
+	flex-direction: column;
+	font-size: 1rem;
+	padding: 10px;
+	padding-bottom: 20px;
+	overflow-y: scroll;
+	height: 450px;
+
+	& li {
+		width: fit-content;
+		border-radius: 1.15rem;
+		line-height: 1.25;
+		max-width: 75%;
+		padding: 0.5rem 0.875rem;
+		position: relative;
+		word-wrap: break-word;
+		margin-top: 2rem;
+	}
+}
+
+.messages--mine {
+	align-self: flex-end;
+	background-color: #248bf5;
+	color: #fff;
+
+	& time {
+		color: #e5e5ea;
+	}
+}
+
+.messages--theirs {
+	background-color: #e5e5ea;
+	color: #000;
+
+	& time {
+		color: rgb(0 0 0 / 50%);
+	}
+}
+
+form {
+	display: flex;
+	gap: 1rem;
+	justify-content: space-between;
+}
+
+#new-message {
+	flex: 1;
+}
+
+#new-message,
+button {
+	padding: 10px;
+	font-size: 1rem;
+	margin-top: 10px;
+}
+
+.container {
+	padding: 5px;
+	display: flex;
+	gap: 1rem;
+	max-width: 800px;
+	margin: 0 auto;
+	margin-top: 20px;
+}
+
+.title {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+aside {
+	flex: 1;
+	flex-basis: 33%;
+	min-width: 0;
+	& ul {
+		display: flex;
+		flex-direction: column;
+	}
+
+	& li {
+		display: flex;
+		align-items: baseline;
+		flex-direction: column;
+
+		padding: 20px 10px;
+		font-size: 13px;
+		background-color: rgb(42 72 101 / 0.05);
+		border-bottom: 1px solid lightgray;
+	}
+
+	& li:hover {
+		background-color: rgb(42 72 101 / 0.01);
+	}
+
+	& a {
+		display: flex;
+		align-items: baseline;
+		width: 100%;
+		flex-direction: column;
+	}
+}
+
+.discussions-list {
+	margin-top: 20px;
+	& span {
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		max-width: 90%;
+		display: inline-block;
+	}
+}
+
+main {
+	max-width: 700px;
+	margin: 0 auto;
+	padding: 0.1rem 0.1rem;
+}
