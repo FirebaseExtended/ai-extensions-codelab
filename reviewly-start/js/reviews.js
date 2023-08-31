@@ -14,12 +14,15 @@
  * limitations under the License.
  */
 
-import mockReviews from "./mock-reviews.js";
-
-import shuffle from "https://esm.sh/lodash.shuffle";
 import nunjucks from "https://esm.sh/nunjucks@3.2.4";
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+import {
+	getFunctions,
+	httpsCallable,
+	connectFunctionsEmulator,
+} from "https://www.gstatic.com/firebasejs/9.22.2/firebase-functions.js";
+
 import config from "./firebase-config.js";
 
 import {
@@ -35,9 +38,14 @@ import {
 
 const app = initializeApp(config);
 const db = getFirestore(app);
+const functions = getFunctions(app);
 
-// Uncomment this line to use the local emulator
+// Uncomment these lines to use the local emulator
 // connectFirestoreEmulator(db, "127.0.0.1", 8080);
+// connectFunctionsEmulator(functions, "127.0.0.1", 5001);
+
+// Insert code below, to import your Firebase Callable Cloud Function ⬇️
+// Insert code above, to import your Firebase Callable Cloud Function ⬆️
 
 const DB_COLLECTION_NAME = "bot";
 
@@ -65,10 +73,10 @@ function calculateReductionPercent(summary, originalReview) {
 function monitorReviews() {
 	onSnapshot(
 		query(collection(db, DB_COLLECTION_NAME), orderBy("timestamp", "desc")),
-		snapshot => {
+		(snapshot) => {
 			let totalReductionPercent = 0;
 			let totalRating = 0;
-			const reviews = snapshot.docs.map(doc => {
+			const reviews = snapshot.docs.map((doc) => {
 				const data = doc.data();
 				let review;
 
@@ -82,7 +90,7 @@ function monitorReviews() {
 							response: data.text,
 							reductionPercent: calculateReductionPercent(
 								parsedJSON.summary,
-								data.originalReview
+								data.originalReview,
 							),
 						};
 
@@ -101,27 +109,19 @@ function monitorReviews() {
 			});
 
 			const averageReductionPercent = Math.round(
-				totalReductionPercent / reviews.length
+				totalReductionPercent / reviews.length,
 			);
 			const averageRating = Math.round(totalRating / reviews.length);
 			renderReviews(reviews, averageReductionPercent, averageRating);
-		}
+		},
 	);
 }
 
 function registerButtonEventListeners() {
-	document.body.addEventListener("click", async event => {
-		const reviews = shuffle(mockReviews).slice(0, 2);
-
+	document.body.addEventListener("click", async (event) => {
 		if (event.target.classList.contains("add-reviews")) {
-			for (const review of reviews) {
-				// Add your updated prompt here ⬇️
-				const reviewWithPrompt = `${review}`;
-				// Add your updated prompt above ⬆️
-
-				// Insert code to add a new document below ⬇️
-				// Insert code to add a new document above ⬆️
-			}
+			// Insert code below, to invoke your Firebase Callable Cloud Function ⬇️
+			// Insert code above, to invoke your Firebase Callable Cloud Function ⬆️
 		}
 	});
 }
