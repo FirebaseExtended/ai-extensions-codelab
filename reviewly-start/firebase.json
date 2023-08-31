@@ -6,9 +6,27 @@
     "ui": {
       "enabled": true
     },
-    "singleProjectMode": true
+    "singleProjectMode": true,
+    "functions": {
+      "port": 5001
+    },
+    "eventarc": {
+      "port": 9299
+    }
   },
   "extensions": {
     "firestore-palm-gen-text": "googlecloud/firestore-palm-gen-text@0.1.7"
-  }
+  },
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log"
+      ]
+    }
+  ]
 }
