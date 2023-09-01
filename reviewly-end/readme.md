@@ -66,8 +66,9 @@ npm run dev
 5. In the file `js/reviews.js`, uncomment the `connectFirestoreEmulator` line:
 
 ```js
-// Uncomment this line to use the local emulator
+// Uncomment these lines to use the local emulator
 connectFirestoreEmulator(db, "127.0.0.1", 8080);
+connectFunctionsEmulator(functions, "127.0.0.1", 5001);
 ```
 
 6. And then navigate to the URL shown in your terminal, for example [http://localhost:8080](http://localhost:8080) or [http://localhost:8000](http://localhost:8000).
