@@ -22,5 +22,11 @@
   },
   "extensions": {
     "firestore-palm-chatbot": "googlecloud/firestore-palm-chatbot@0.1.5"
+  },
+  "firestore": {
+    "rules": "firestore.rules"
+  },
+  "storage": {
+    "rules": "storage.rules"
   }
 }
