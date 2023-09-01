@@ -65,6 +65,7 @@ NEXT_PUBLIC_IS_TEST_MODE=true
 5. In a new terminal tab:
 
 ```sh
+npm install
 npm run dev
 ```
 
