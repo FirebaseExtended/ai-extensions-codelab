@@ -1,0 +1,14 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    match /video_annotation_input/{video_id} {
+      // A signed in user can upload if their uid matches the uid in the
+      // metadata. Users cannot edit or delete videos.
+      allow create: if request.auth.uid == request.resource.metadata.uid;
+      // A signed in user can read their videos if their uid matches the
+      // uid on the video metadata.
+      allow read: if request.auth.uid == resource.metadata.uid;
+    }
+  }
+}
