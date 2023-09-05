@@ -4,37 +4,59 @@ An AI chatbot that uses the PaLM API to answer questions.
 
 ## To run with a real firebase project (recommended)
 
-1. In your terminal, navigate to this web app folder:
+Run these commands in your terminal:
+
+1. Navigate to this web app folder and install dependencies:
 
 ```sh
 cd chatbot-end
+npm install
 ```
 
-2. In your terminal, run this command:
+2. Specify which project Firebase should use:
 
 ```sh
 firebase use <name-of-your-project>
 # For example: firebase use codelab-ai-extensions
 ```
 
-3. To deploy the extension used in this web app, run this command in your terminal:
+3. Enable the web frameworks experiment:
+
+```sh
+firebase experiments:enable webframeworks
+```
+
+4. Initialize Firebase hosting:
+
+```sh
+firebase init hosting
+```
+
+Use default options for all prompts.
+
+5. Deploy the extension used in this web app:
 
 _Note_: If you are asked `Would you like to delete any other extensions`, select **No**.
 
 ```sh
-firebase deploy --only extensions --project=<your-project-id>
+firebase deploy --only extensions
 ```
 
-4. Edit the `lib/firebase/firebase-config.js` file with your Firebase [configuration](https://console.firebase.google.com/u/0/project/_/settings/general).
-
-5. Run these commands in your terminal:
+6. Deploy the Firestore and Cloud Storage Security Rules:
 
 ```sh
-npm install
-npm run dev
+firebase deploy --only firestore:rules,storage
 ```
 
-6. Open [http://localhost:3000/](http://localhost:3000/) in your browser to see the result.
+7. In your code editor, edit the `lib/firebase/firebase-config.js` file with your Firebase [configuration](https://console.firebase.google.com/u/0/project/_/settings/general).
+
+8. Back in your terminal, run the web app:
+
+```sh
+firebase emulators:start --only hosting
+```
+
+9. Open [http://localhost:5000/](http://localhost:5000/) in your browser (or whatever URL is presented to your in your terminal) to see the result.
 
 ## To run locally with mock data (not recommended)
 

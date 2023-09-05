@@ -4,62 +4,79 @@ Get a brief description of a video using the Google Cloud Video Intelligence API
 
 ## To run with a real firebase project (recommended)
 
-1. In your terminal, navigate to this web app folder:
+Run these commands in your terminal:
+
+1. Navigate to this web app folder and install dependencies:
 
 ```sh
-cd video-hint-end
+cd video-hint-start
+npm install
+(cd functions && npm install)
 ```
 
-2. In your terminal, run this command:
+2. Specify which project Firebase should use:
 
 ```sh
 firebase use <name-of-your-project>
 # For example: firebase use codelab-ai-extensions
 ```
 
-3. Run these commands to install `npm` dependencies:
+3. Enable the web frameworks experiment:
 
 ```sh
-npm install
-(cd functions && npm install)
+firebase experiments:enable webframeworks
 ```
 
-4. Edit the `lib/firebase/firebase-config.js` file with your Firebase [configuration](https://console.firebase.google.com/u/0/project/_/settings/general).
+4. Initialize Firebase hosting:
 
-5. To deploy the Cloud Functions in the [`functions`](./functions/) folder, run this command in your terminal:
+```sh
+firebase init hosting
+```
+
+Use default options for all prompts.
+
+5. Deploy the Firestore and Cloud Storage Security Rules:
+
+```sh
+firebase deploy --only firestore:rules,storage
+```
+
+6. Deploy the Cloud Functions in the [`functions`](./functions/) folder:
 
 ```sh
 firebase deploy --only functions
 ```
 
-6. An [Extensions Manifest](https://firebase.google.com/docs/extensions/manifest) is already provided for you in this folder. However you need to edit the [extensions/storage-label-videos.env](./extensions/storage-label-videos.env) file with your actual bucket name:
+7. An [Extensions Manifest](https://firebase.google.com/docs/extensions/manifest) is already provided for you in this folder. However you need to edit the [extensions/storage-label-videos.env](./extensions/storage-label-videos.env) file with your actual bucket name:
 
 ```
 INPUT_VIDEOS_BUCKET=<your-bucket-name>
 OUTPUT_BUCKET=<your-bucket-name>
 ```
 
-7. You also need to edit the [extensions/text-to-speech.env](./extensions/text-to-speech.env) file with your actual bucket name:
+8. You also need to edit the [extensions/text-to-speech.env](./extensions/text-to-speech.env) file with your actual bucket name:
 
 ```
 BUCKET_NAME=<your-bucket-name>
 ```
 
-8. To deploy the extensions used in this web app, run this command in your terminal:
+9. To deploy the extensions used in this web app, run this command in your terminal:
 
 _Note_: If you are asked `Would you like to delete any other extensions`, select **No**.
 
 ```sh
-firebase deploy --only extensions --project=<your-project-id>
+firebase deploy --only extensions
 ```
 
-9. Run this command in your terminal:
+10. Edit the `lib/firebase/firebase-config.js` file with your Firebase [configuration](https://console.firebase.google.com/u/0/project/_/settings/general).
+
+11. Back in your terminal, run the web app:
 
 ```sh
-npm run dev
+firebase emulators:start --only hosting
 ```
 
-10. Open [http://localhost:3000/](http://localhost:3000/) in your browser to see the result.
+12. Open [http://localhost:5000/](http://localhost:5000/) in your browser (or whatever URL is presented to your in your terminal) to see the result.
 
 ## To run locally with local emulators (not recommended)
 
@@ -70,7 +87,7 @@ This is only useful for codelab authors, or learners who are unable to use a rea
 1. In your terminal, navigate to this web app folder:
 
 ```sh
-cd video-hint-end
+cd video-hint-start
 ```
 
 2. Replace the `.env.development` file with these contents:
