@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+// Get your configuration here: https://console.firebase.google.com/project/_/settings/general/web:
+
 export default {
 	projectId: "demo-codelab-ai-extension-reviewly",
 	appId: "demo-codelab-ai-extension-reviewly",

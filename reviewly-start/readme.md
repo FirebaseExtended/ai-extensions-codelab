@@ -4,13 +4,16 @@ A sample web app that summarizes reviews using the PaLM API and a Firebase AI ex
 
 ## To run with a real firebase project (recommended)
 
-1. In your terminal, navigate to this web app folder:
+Run these commands in your terminal:
+
+1. Navigate to this web app folder and install dependencies:
 
 ```sh
-cd reviewly-end
+cd reviewly-start
+npm install
 ```
 
-2. In your terminal, run this command:
+2. Specify which project Firebase should use:
 
 ```sh
 firebase use <name-of-your-project>
@@ -22,15 +25,26 @@ firebase use <name-of-your-project>
 _Note_: If you are asked `Would you like to delete any other extensions`, select **No**.
 
 ```sh
-firebase deploy --only extensions --project=<your-project-id>
+firebase deploy --only extensions
 ```
 
 4. Edit the `js/firebase-config.js` file with your Firebase [configuration](https://console.firebase.google.com/u/0/project/_/settings/general).
 
-5. In your terminal tab, run these commands:
+5. Deploy the Cloud Function in the [`functions`](./functions/) folder:
 
 ```sh
-npm install
+firebase deploy --only functions
+```
+
+6. Deploy the Firestore and Cloud Storage Security Rules:
+
+```sh
+firebase deploy --only firestore:rules,storage
+```
+
+7. Back in your terminal, run this command:
+
+```sh
 npm run dev
 ```
 
@@ -45,7 +59,7 @@ This is only useful for codelab authors, or learners who are unable to use a rea
 1. In your terminal, navigate to this web app folder:
 
 ```sh
-cd reviewly-end
+cd reviewly-start
 ```
 
 2. Run this command to seed the Firestore emulator with some test data:
