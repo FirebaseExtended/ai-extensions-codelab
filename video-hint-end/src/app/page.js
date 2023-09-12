@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-import getUser from "@/lib/getUser.js";
 import { getVideos } from "@/lib/firebase/firestore.js";
+import {getAuthenticatedAppForUser} from '@/lib/firebase/firebase'
 import Main from "@/components/Main";
 
 export const dynamic = "force-dynamic";
 
 export default async function Discussion() {
-	const user = getUser();
-	const videos = await getVideos(user?.id);
+	const {currentUser} = await getAuthenticatedAppForUser();
+	const videos = await getVideos(currentUser?.uid);
 
 	return (
 		<main>
-			<Main initialVideos={videos} initialUser={user} />
+			<Main initialVideos={videos}  />
 		</main>
 	);
 }

@@ -1,3 +1,4 @@
+"use client"
 /**
  * Copyright 2023 Google LLC
  *
@@ -14,7 +15,11 @@
  * limitations under the License.
  */
 
-import { cookies } from "next/headers";
+ import { onAuthStateChanged } from 'firebase/auth'
+ import { useEffect, useState } from 'react'
+ 
+ import { auth } from '@/lib/firebase/firebase'
+ import { useRouter } from 'next/navigation'
 
 // This is used from next.js server components
 // it helps us get the user from the session cookie
@@ -23,14 +28,30 @@ import { cookies } from "next/headers";
 // Note: this code does not factor in security best practices
 
 export default function getUser() {
-	const cookieStore = cookies();
-	const userCookie = cookieStore.get("CODELAB_VIDEO_HINT_USER");
+	// The initialUser comes from the server via a server component
+	const [user, setUser] = useState("");
+	const router = useRouter()
 
-	if (userCookie?.value) {
-		try {
-			return JSON.parse(userCookie.value);
-		} catch (err) {
-			console.log(`Error parsing user cookie`, err);
-		}
-	}
+	useEffect(() => {
+		const unsubscribe = onAuthStateChanged(auth, (authUser) => {
+			setUser(authUser)
+		})
+
+		return () => unsubscribe()
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
+
+	useEffect(() => {
+		onAuthStateChanged(auth, (authUser) => {
+			if (user === undefined) return
+
+			// refresh when user changed to ease testing
+			if (user?.email !== authUser?.email) {
+				router.refresh()
+			}
+		})
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [user])
+
+	return user;
 }

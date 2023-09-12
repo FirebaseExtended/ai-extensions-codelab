@@ -11,8 +11,23 @@
 	"dependencies": {
 		"encoding": "^0.1.13",
 		"firebase": "^10.1.0",
+		"firebase-admin": "^11.10.1",
 		"next": "13.4.16",
 		"react": "18.2.0",
-		"react-dom": "18.2.0"
+		"react-dom": "18.2.0",
+		"request": "^2.88.2"
+	},
+	"browser": {
+		"fs": false,
+		"path": false,
+		"os": false,
+		"child_process": false,
+		"crypto": false,
+		"stream": false,
+		"http": false,
+		"tls": false,
+		"zlib": false,
+		"https": false,
+		"net": false
 	}
 }

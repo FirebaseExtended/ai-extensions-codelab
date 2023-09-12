@@ -21,7 +21,7 @@ import Videos from "./Videos";
 import { Fragment, useState, useEffect, useRef } from "react";
 import { getVideosSnapshot } from "@/lib/firebase/firestore.js";
 import { uploadVideo } from "@/lib/firebase/storage.js";
-import { onAuthStateChanged } from "@/lib/firebase/auth.js";
+import getUser from '@/lib/getUser'
 import exampleVideos from "@/lib/exampleVideos.js";
 
 function getFileExtension(filename) {
@@ -63,7 +63,7 @@ async function handleExampleVideo({
 	);
 }
 
-export default function Chat({ initialVideos, initialUser }) {
+export default function Chat({ initialVideos }) {
 	const [uploadProgress, setUploadProgress] = useState(
 		new Array(exampleVideos.length).fill(0)
 	);
@@ -71,20 +71,7 @@ export default function Chat({ initialVideos, initialUser }) {
 	const [uploading, setUploading] = useState(false);
 
 	const [videos, setVideos] = useState(initialVideos);
-	const [userId, setUserId] = useState(initialUser?.id || "");
-
-	useEffect(() => {
-		const unsubscribe = onAuthStateChanged(user => {
-			if (user) {
-				setUserId(user.uid);
-			} else {
-				setUserId("");
-			}
-		});
-		return () => {
-			unsubscribe();
-		};
-	}, []);
+	const userId = getUser()?.uid;
 
 	useEffect(() => {
 		if (!userId) {

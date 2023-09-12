@@ -18,7 +18,7 @@ import firebaseConfig from "@/lib/firebase/firebase-config.js";
 import { initializeApp } from "firebase/app";
 import { getFirestore, connectFirestoreEmulator } from "firebase/firestore";
 import { getStorage, connectStorageEmulator } from "firebase/storage";
-import { getAuth, connectAuthEmulator } from "firebase/auth";
+import { getAuth, connectAuthEmulator, signInWithCustomToken } from "firebase/auth";
 import { getApps } from "firebase/app";
 
 let app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
@@ -37,3 +37,88 @@ if (IS_TEST_MODE) {
 		disableWarnings: true,
 	});
 }
+
+
+export async function getAuthenticatedAppForUser(session = null) {
+	if (typeof window !== "undefined") {
+	  // client
+	  console.log("client: ", firebaseApp);
+  
+	  return { app: firebaseApp, user: auth.currentUser };
+	}
+	const { initializeApp: initializeAdminApp, getApps: getAdminApps } = await import("firebase-admin/app");
+	
+	const { credential } = await import("firebase-admin");
+	const { getAuth: getAdminAuth } = await import("firebase-admin/auth");
+  
+	const ADMIN_APP_NAME = "firebase-app";
+  
+	const adminApp =
+	  getAdminApps().find((it) => it.name === ADMIN_APP_NAME) ||
+	  initializeAdminApp(
+		{
+		  credential: credential.cert({
+			clientEmail: process.env._FIREBASE_ADMIN_CLIENT_EMAIL,
+			privateKey: process.env._FIREBASE_ADMIN_PRIVATE_KEY,
+			projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+		  }),
+		},
+		ADMIN_APP_NAME
+	  );
+  
+	const adminAuth = getAdminAuth(adminApp);
+  
+	const noSessionReturn = { app: null, currentUser: null };
+  
+	if (!session) {
+	  // if no session cookie was passed, try to get from next/headers for app router
+	  session = await getAppRouterSession();
+	  if (!session) return noSessionReturn;
+	}
+  
+	const decodedIdToken = await adminAuth.verifySessionCookie(session);
+  
+	// handle revoked tokens
+	const isRevoked = !(await adminAuth
+	  .verifySessionCookie(session, true)
+	  .catch((e) => console.error(e.message)));
+	if (isRevoked) return noSessionReturn;
+  
+	const authenticatedApp = initializeAuthenticatedApp(decodedIdToken.uid);
+	const auth = getAuth(authenticatedApp);
+  
+	// authenticate with custom token
+	if (auth.currentUser?.uid !== decodedIdToken.uid) {
+	  // TODO(jamesdaniels) get custom claims
+	  const customToken = await adminAuth
+		.createCustomToken(decodedIdToken.uid)
+		.catch((e) => console.error(e.message));
+  
+	  if (!customToken) return noSessionReturn;
+  
+	  await signInWithCustomToken(auth, customToken);
+	}
+  
+	return { authenticatedApp, currentUser: auth.currentUser };
+  }
+  
+  async function getAppRouterSession() {
+	// dynamically import to prevent import errors in pages router
+	const { cookies } = await import("next/headers");
+  
+	try {
+	  return cookies().get("__session")?.value;
+	} catch (error) {
+	  // cookies() throws when called from pages router
+	  return undefined;
+	}
+  }
+  
+  function initializeAuthenticatedApp(uid) {
+	const random = Math.random().toString(36).split(".")[1];
+	const appName = `authenticated-context:${uid}:${random}`;
+  
+	const app = initializeApp(firebaseConfig, appName);
+  
+	return app;
+  }
