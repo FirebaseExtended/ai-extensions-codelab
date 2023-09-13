@@ -17,7 +17,7 @@
 import "@/src/app/styles.css";
 
 import Header from "@/components/Header.jsx";
-import getUser from "@/lib/getUser.js";
+import { getAuthenticatedAppForUser } from "@/lib/firebase/firebase";
 
 // Force next.js to treat this route as server-side rendered
 export const dynamic = "force-dynamic";
@@ -27,11 +27,12 @@ export const metadata = {
 	description: "Video descriptions with the Cloud Video Intelligence API",
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+	const { currentUser } = await getAuthenticatedAppForUser();
 	return (
 		<html lang="en">
 			<body>
-				<Header initialUser={getUser()} />
+			<Header initialUser={currentUser.toJSON()}/>
 				{children}
 			</body>
 		</html>

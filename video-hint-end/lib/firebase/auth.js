@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {
+ import {
 	GoogleAuthProvider,
 	signInWithPopup,
 	onAuthStateChanged as _onAuthStateChanged,

@@ -3,7 +3,7 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    match /bot/{bot} {
+    match /bot/{document=**} {
       // Anyone can read the documents the `bot` collection
       allow read: if true;
       // No users can write to the bot collection
@@ -11,7 +11,7 @@ service cloud.firestore {
       allow write: if false;
     }
 
-    match /users/{uid}/discussions/{discussion}/messages/{message} {
+    match /users/{uid}/{document=**} {
       // Documents in `messages` subcollection are accessed by that user
       // Once created, documents cannot be edited or deleted.
       allow read, create: if request.auth.uid == uid;

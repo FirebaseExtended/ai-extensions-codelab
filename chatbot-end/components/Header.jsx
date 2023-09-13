@@ -40,20 +40,24 @@ async function handleUserSession(user = {}) {
 function useUserSession(initialUser) {
 	// The initialUser comes from the server via a server component
 	const [user, setUser] = useState(initialUser);
-	useEffect(() => {
-		const unsubscribe = onAuthStateChanged(async user => {
-			if (user) {
-				setUser(user);
+	const router = useRouter()
 
-				// A more resillient approach would be to send the Firebase auth token to the server, and have the server verify the token with firebase-admin, however this approach of sending just the user data we need is simpler and works for this demo
-				await handleUserSession({
-					email: user.email,
-					id: user.uid,
-					displayName: user.displayName,
-				});
-			} else {
-				setUser(null);
-				await handleUserSession();
+	useEffect(() => {
+		const unsubscribe = onAuthStateChanged((authUser) => {
+			setUser(authUser)
+		})
+
+		return () => unsubscribe()
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
+
+	useEffect(() => {
+		onAuthStateChanged((authUser) => {
+			if (user === undefined) return
+
+			// refresh when user changed to ease testing
+			if (user?.email !== authUser?.email) {
+				router.refresh()
 			}
 		});
 		return () => {
