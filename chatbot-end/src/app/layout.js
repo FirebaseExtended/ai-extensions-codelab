@@ -33,7 +33,7 @@ export const metadata = {
 	 return (
 		 <html lang="en">
 			 <body>
-			 <Header initialUser={currentUser.toJSON()}/>
+			 <Header initialUser={currentUser?.toJSON()}/>
 				 {children}
 			 </body>
 		 </html>
