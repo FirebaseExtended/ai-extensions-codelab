@@ -25,18 +25,6 @@ import {
 } from "@/lib/firebase/auth.js";
 import { useRouter } from "next/navigation";
 
-// If the user logs in on the client, we send the user data to the server
-// Sending a user payload to this endpoint will create a persistent cookie
-async function handleUserSession(user = {}) {
-	return fetch("/api", {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-		},
-		body: JSON.stringify(user),
-	});
-}
-
 function useUserSession(initialUser) {
 	// The initialUser comes from the server via a server component
 	const [user, setUser] = useState(initialUser);
@@ -59,11 +47,9 @@ function useUserSession(initialUser) {
 			if (user?.email !== authUser?.email) {
 				router.refresh()
 			}
-		});
-		return () => {
-			unsubscribe();
-		};
-	}, []);
+		})
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [user])
 	return user;
 }
 
