@@ -30,12 +30,12 @@ export const db = getFirestore(firebaseApp);
 const IS_TEST_MODE = process.env.NEXT_PUBLIC_IS_TEST_MODE === "true";
 
 // For development purposes only
-if (IS_TEST_MODE) {
-	connectFirestoreEmulator(db, "127.0.0.1", 8080);
-	connectAuthEmulator(auth, "http://127.0.0.1:9099", {
-		disableWarnings: true,
-	});
-}
+// if (IS_TEST_MODE) {
+// 	connectFirestoreEmulator(db, "127.0.0.1", 8080);
+// 	connectAuthEmulator(auth, "http://127.0.0.1:9099", {
+// 		disableWarnings: true,
+// 	});
+// }
 
 export async function getAuthenticatedAppForUser(session = null) {
 
@@ -50,11 +50,13 @@ export async function getAuthenticatedAppForUser(session = null) {
   const { initializeApp: initializeAdminApp, getApps: getAdminApps } = await import("firebase-admin/app");
 
   const { getAuth: getAdminAuth } = await import("firebase-admin/auth");
-
+  const { credential } = await import("firebase-admin");
   const ADMIN_APP_NAME = "firebase-frameworks";
   const adminApp =
     getAdminApps().find((it) => it.name === ADMIN_APP_NAME) ||
-    initializeAdminApp({}, ADMIN_APP_NAME);
+    initializeAdminApp({
+      credential: credential.applicationDefault(),
+  }, ADMIN_APP_NAME);
 
   const adminAuth = getAdminAuth(adminApp);
   const noSessionReturn = { app: null, currentUser: null };

@@ -22,6 +22,7 @@ import { redirect } from "next/navigation";
 export const dynamic = "force-dynamic";
 
 export default async function Discussion({ params }) {
+
 	const user = getUser();
 	let discussions = await getDiscussions(user?.id);
 	const messages = await getMessages(user?.id, params.id);

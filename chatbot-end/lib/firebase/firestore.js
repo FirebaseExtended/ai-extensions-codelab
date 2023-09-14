@@ -132,7 +132,7 @@ function subscribeToMessages(userId, discussionId, callback) {
 	return unsubscribe;
 }
 
-async function addNewMessage({ userId, discussionId, message }) {
+async function addNewMessage({ db, userId, discussionId, message }) {
 	if (!userId) {
 		throw new Error("userId is required");
 	}
