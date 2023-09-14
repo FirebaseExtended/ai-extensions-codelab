@@ -40,7 +40,7 @@ function formatDiscussionDoc(doc) {
 	};
 }
 
-function getDiscussionsQuery(userId) {
+function getDiscussionsQuery(db, userId) {
 	if (!userId) {
 		return null;
 	}
@@ -48,11 +48,11 @@ function getDiscussionsQuery(userId) {
 	return query(discussionsRef, orderBy("updatedTime", "desc"));
 }
 
-async function getDiscussions(userId) {
+async function getDiscussions(db, userId) {
 	if (!userId) {
 		return [];
 	}
-	const q = getDiscussionsQuery(userId);
+	const q = getDiscussionsQuery(db, userId);
 	const querySnapshot = await getDocs(q);
 	return querySnapshot.docs.map(formatDiscussionDoc);
 }
@@ -62,7 +62,7 @@ function subscribeToDiscussions(userId, callback) {
 		return;
 	}
 
-	const q = getDiscussionsQuery(userId);
+	const q = getDiscussionsQuery(db, userId);
 
 	const unsubscribe = onSnapshot(q, querySnapshot => {
 		const discussions = querySnapshot.docs.map(formatDiscussionDoc);
@@ -76,7 +76,7 @@ function subscribeToDiscussions(userId, callback) {
 	return unsubscribe;
 }
 
-function getMessagesQuery(userId, discussionId) {
+function getMessagesQuery(db, userId, discussionId) {
 	if (!userId || !discussionId) {
 		return null;
 	}
@@ -107,12 +107,12 @@ function handleMessageDoc(doc) {
 	return item;
 }
 
-async function getMessages(userId, discussionId) {
+async function getMessages(db, userId, discussionId) {
 	if (!userId || !discussionId) {
 		return [];
 	}
 
-	const q = getMessagesQuery(userId, discussionId);
+	const q = getMessagesQuery(db, userId, discussionId);
 	const querySnapshot = await getDocs(q);
 	return querySnapshot.docs.map(handleMessageDoc);
 }
@@ -122,7 +122,7 @@ function subscribeToMessages(userId, discussionId, callback) {
 		return;
 	}
 
-	const q = getMessagesQuery(userId, discussionId);
+	const q = getMessagesQuery(db, userId, discussionId);
 
 	const unsubscribe = onSnapshot(q, querySnapshot => {
 		const messages = querySnapshot.docs.map(handleMessageDoc);
