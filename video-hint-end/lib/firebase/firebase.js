@@ -17,7 +17,7 @@ import firebaseConfig from "@/lib/firebase/firebase-config.js";
 import { initializeApp } from "firebase/app";
 import { getFirestore, connectFirestoreEmulator } from "firebase/firestore";
 import { getStorage, connectStorageEmulator } from "firebase/storage";
-import { getAuth, connectAuthEmulator } from "firebase/auth";
+import { getAuth, connectAuthEmulator, signInWithCustomToken } from "firebase/auth";
 import { getApps } from "firebase/app";
 
 
@@ -32,11 +32,11 @@ const IS_TEST_MODE = process.env.NEXT_PUBLIC_IS_TEST_MODE === "true";
 
 // For development purposes only
 if (IS_TEST_MODE) {
-	connectFirestoreEmulator(db, "127.0.0.1", 8080);
-	connectStorageEmulator(storage, "127.0.0.1", 9199);
-	connectAuthEmulator(auth, "http://127.0.0.1:9099", {
-		disableWarnings: true,
-	});
+	// connectFirestoreEmulator(db, "127.0.0.1", 8080);
+	// connectStorageEmulator(storage, "127.0.0.1", 9199);
+	// connectAuthEmulator(auth, "http://127.0.0.1:9099", {
+	// 	disableWarnings: true,
+	// });
 }
 
 export async function getAuthenticatedAppForUser(session = null) {
@@ -52,11 +52,13 @@ export async function getAuthenticatedAppForUser(session = null) {
   const { initializeApp: initializeAdminApp, getApps: getAdminApps } = await import("firebase-admin/app");
 
   const { getAuth: getAdminAuth } = await import("firebase-admin/auth");
-
+  const { credential } = await import("firebase-admin");
   const ADMIN_APP_NAME = "firebase-frameworks";
   const adminApp =
     getAdminApps().find((it) => it.name === ADMIN_APP_NAME) ||
-    initializeAdminApp({}, ADMIN_APP_NAME);
+    initializeAdminApp({
+      credential: credential.applicationDefault()
+    }, ADMIN_APP_NAME);
 
   const adminAuth = getAdminAuth(adminApp);
   const noSessionReturn = { app: null, currentUser: null };

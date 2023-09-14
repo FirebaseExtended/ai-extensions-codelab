@@ -17,7 +17,7 @@
 import firebaseConfig from "@/lib/firebase/firebase-config.js";
 import { initializeApp } from "firebase/app";
 import { getFirestore, connectFirestoreEmulator } from "firebase/firestore";
-import { getAuth, connectAuthEmulator } from "firebase/auth";
+import { getAuth, connectAuthEmulator, signInWithCustomToken } from "firebase/auth";
 import { getApps } from "firebase/app";
 
 
@@ -55,8 +55,8 @@ export async function getAuthenticatedAppForUser(session = null) {
   const adminApp =
     getAdminApps().find((it) => it.name === ADMIN_APP_NAME) ||
     initializeAdminApp({
-      credential: credential.applicationDefault(),
-  }, ADMIN_APP_NAME);
+      credential: credential.applicationDefault()
+    }, ADMIN_APP_NAME);
 
   const adminAuth = getAdminAuth(adminApp);
   const noSessionReturn = { app: null, currentUser: null };

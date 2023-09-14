@@ -44,7 +44,7 @@ function getDiscussionsQuery(userId) {
 	if (!userId) {
 		return null;
 	}
-	const discussionsRef = collection(db, "users", userId, "discussions");
+	const discussionsRef = collection(db, "users", userId, "discussion");
 	return query(discussionsRef, orderBy("updatedTime", "desc"));
 }
 
@@ -84,7 +84,7 @@ function getMessagesQuery(userId, discussionId) {
 		db,
 		"users",
 		userId,
-		"discussions",
+		"discussion",
 		discussionId,
 		"messages"
 	);
@@ -145,7 +145,7 @@ async function addNewMessage({ db, userId, discussionId, message }) {
 
 	if (discussionId === "new") {
 		const newDiscussionRef = await addDoc(
-			collection(db, "users", userId, "discussions"),
+			collection(db, "users", userId, "discussion"),
 			{
 				updatedTime: serverTimestamp(),
 				latestMessage: message,
@@ -160,7 +160,7 @@ async function addNewMessage({ db, userId, discussionId, message }) {
 			db,
 			"users",
 			userId,
-			"discussions",
+			"discussion",
 			discussionId,
 			"messages"
 		),
@@ -170,7 +170,7 @@ async function addNewMessage({ db, userId, discussionId, message }) {
 		}
 	);
 
-	await updateDoc(doc(db, "users", userId, "discussions", discussionId), {
+	await updateDoc(doc(db, "users", userId, "discussion", discussionId), {
 		latestMessage: message,
 		updatedTime: serverTimestamp(),
 	});
