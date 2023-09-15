@@ -20,6 +20,7 @@
     "fs": false,
     "os": false,
     "path": false,
-    "child_process": false
+    "child_process": false,
+    "request": false
   }
 }

@@ -20,6 +20,7 @@
 		"os": false,
 		"path": false,
 		"child_process": false,
-		"net": false
+		"net": false,
+		"tls": false
 	}
 }

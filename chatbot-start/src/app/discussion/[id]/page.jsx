@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-import getUser from "@/lib/getUser.js";
+import { getFirestore } from "firebase/firestore";
 import { getDiscussions, getMessages } from "@/lib/firebase/firestore.js";
 import { getAuthenticatedAppForUser, app } from "@/lib/firebase/firebase";
+
 import Chat from "@/components/Chat";
 import { redirect } from "next/navigation";
 
@@ -27,8 +27,8 @@ export default async function Discussion({ params }) {
 
 	const db = getFirestore(authenticatedApp ?? app);
 	const user = currentUser?.toJSON();
-	let discussions = await getDiscussions(user?.id);
-	const messages = await getMessages(user?.id, params.id);
+	let discussions = await getDiscussions(db, user?.uid);
+	const messages = await getMessages(db, user?.uid, params.id);
 
 	if (params.id === "new") {
 		discussions = [

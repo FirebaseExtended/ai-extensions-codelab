@@ -14,7 +14,7 @@ service cloud.firestore {
     match /users/{uid}/{document=**} {
       // Documents in `messages` subcollection are accessed by that user
       // Once created, documents cannot be edited or deleted.
-      allow read, create: if request.auth.uid == uid;
+      allow read, write: if request.auth.uid == uid;
     }
   }
 }

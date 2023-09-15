@@ -17,7 +17,7 @@
 import firebaseConfig from "@/lib/firebase/firebase-config.js";
 import { initializeApp } from "firebase/app";
 import { getFirestore, connectFirestoreEmulator } from "firebase/firestore";
-import { getAuth, connectAuthEmulator } from "firebase/auth";
+import { getAuth, connectAuthEmulator, signInWithCustomToken } from "firebase/auth";
 import { getApps } from "firebase/app";
 
 
