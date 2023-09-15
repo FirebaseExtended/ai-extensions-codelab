@@ -65,7 +65,7 @@ export async function getAuthenticatedAppForUser(session = null) {
   if (!session) {
     // if no session cookie was passed, try to get from next/headers for app router
     session = await getAppRouterSession();
-
+    console.log("session", session)
     if (!session) return noSessionReturn;
   }
 
@@ -73,13 +73,11 @@ export async function getAuthenticatedAppForUser(session = null) {
 
   const app = initializeAuthenticatedApp(decodedIdToken.uid)
 	const auth = getAuth(app)
-
   // handle revoked tokens
   const isRevoked = !(await adminAuth
     .verifySessionCookie(session, true)
     .catch((e) => console.error(e.message)));
   if (isRevoked) return noSessionReturn;
-
   // authenticate with custom token
   if (auth.currentUser?.uid !== decodedIdToken.uid) {
     // TODO(jamesdaniels) get custom claims
@@ -88,7 +86,6 @@ export async function getAuthenticatedAppForUser(session = null) {
       .catch((e) => console.error(e.message));
 
     if (!customToken) return noSessionReturn;
-
     await signInWithCustomToken(auth, customToken);
   }
   console.log("server: ", app);
