@@ -13,18 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-import getUser from "@/lib/getUser.js";
+import { getFirestore } from "firebase/firestore";
 import { getDiscussions, getMessages } from "@/lib/firebase/firestore.js";
+import { getAuthenticatedAppForUser } from "@/lib/firebase/firebase";
 import Chat from "@/components/Chat";
 import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
 export default async function Discussion({ params }) {
-	const user = getUser();
-	let discussions = await getDiscussions(user?.id);
-	const messages = await getMessages(user?.id, params.id);
+	const { app, currentUser } = await getAuthenticatedAppForUser();
+	const db = getFirestore(app);
+	const user = currentUser?.toJSON();
+	let discussions = await getDiscussions(db, user?.uid);
+	const messages = await getMessages(db, user?.uid, params.id);
 
 	if (params.id === "new") {
 		discussions = [
