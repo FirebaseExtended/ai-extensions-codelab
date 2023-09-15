@@ -50,7 +50,7 @@
 		 })
 		 // eslint-disable-next-line react-hooks/exhaustive-deps
 	 }, [user])
- 
+	
 	 return user;
  }
  
@@ -68,38 +68,40 @@
 		 event.preventDefault();
 		 signInWithGoogle();
 	 };
-	return (
-		<header>
-			<Link href="/" className="logo">
-				Video Hint
-			</Link>
-			{user ? (
-				<>
-					<div className="profile">
-						<p>
-							<img src="/profile.svg" alt={user.email} />
-							{user.displayName}
-						</p>
-
-						<div className="menu">
-							...
-							<ul>
-								<li>{user.displayName}</li>
-
-								<li>
-									<a href="#" onClick={handleSignOut}>
-										Sign Out
-									</a>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</>
-			) : (
-				<a href="#" onClick={handleSignIn}>
-					Sign In with Google
-				</a>
-			)}
-		</header>
-	);
-}
+ 
+	 return (
+		 <header>
+			 <Link href="/" className="logo">
+			 	Video Hint
+			 </Link>
+			 {user ? (
+				 <>
+					 <div className="profile">
+						 <p>
+							 <img src="/profile.svg" alt={user.email} />
+							 {user.displayName}
+						 </p>
+ 
+						 <div className="menu">
+							 ...
+							 <ul>
+								 <li>{user.displayName}</li>
+ 
+								 <li>
+									 <a href="#" onClick={handleSignOut}>
+										 Sign Out
+									 </a>
+								 </li>
+							 </ul>
+						 </div>
+					 </div>
+				 </>
+			 ) : (
+				 <a href="#" onClick={handleSignIn}>
+					 Sign In with Google
+				 </a>
+			 )}
+		 </header>
+	 );
+ }
+ 

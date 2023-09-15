@@ -23,6 +23,7 @@ import { getVideosSnapshot } from "@/lib/firebase/firestore.js";
 import { uploadVideo } from "@/lib/firebase/storage.js";
 import { onAuthStateChanged } from "@/lib/firebase/auth.js";
 import exampleVideos from "@/lib/exampleVideos.js";
+import { useRouter } from "next/navigation";
 
 function getFileExtension(filename) {
 	const parts = filename.split(".");
@@ -62,8 +63,36 @@ async function handleExampleVideo({
 		}
 	);
 }
+function useUserSession(initialUserId) {
+	// The initialUser comes from the server via a server component
+	const [userId, setUserId] = useState(initialUserId);
+	const router = useRouter()
 
-export default function Chat({ initialVideos, initialUserId }) {
+	useEffect(() => {
+		const unsubscribe = onAuthStateChanged((authUser) => {
+			setUserId(authUser ? authUser.uid : "")
+		})
+
+		return () => unsubscribe()
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
+
+	useEffect(() => {
+		onAuthStateChanged((authUser) => {
+			if (userId === undefined) return "";
+
+			// refresh when user changed to ease testing
+			if (userId !== authUser?.uid) {
+				router.refresh()
+			}
+		})
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [userId])
+
+	return userId;
+}
+
+export default function Main({ initialVideos, initialUserId }) {
 	const [uploadProgress, setUploadProgress] = useState(
 		new Array(exampleVideos.length).fill(0)
 	);
@@ -71,13 +100,27 @@ export default function Chat({ initialVideos, initialUserId }) {
 	const [uploading, setUploading] = useState(false);
 
 	const [videos, setVideos] = useState(initialVideos);
-	const [userId] = useState(initialUserId || "");
+	const [userId, setUserId] = useState(initialUserId || "");
+
+	useEffect(() => {
+		const unsubscribe = onAuthStateChanged(user => {
+			if (user) {
+				setUserId(user.uid);
+			} else {
+				setUserId("");
+			}
+		});
+		return () => {
+			unsubscribe();
+		};
+	}, []);
 	useEffect(() => {
 		if (!userId) {
 			return;
 		}
 
 		const unsubscribeFromVideosSnapshot = getVideosSnapshot(
+			null,
 			userId,
 			data => {
 				setVideos(data);

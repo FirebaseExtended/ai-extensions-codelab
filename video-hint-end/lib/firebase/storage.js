@@ -21,11 +21,9 @@ import {
 	getStorage
 } from "firebase/storage";
 
-import { getAuthenticatedAppForUser, firebaseApp } from "@/lib/firebase/firebase";
+import { storage } from "@/lib/firebase/firebase";
 
 export async function uploadVideo(userId, filePath, file) {
-	const { app:authenticatedApp } = await getAuthenticatedAppForUser();
-	const storage = getStorage(authenticatedApp ?? firebaseApp);
 	const storageRef = ref(storage, `video_annotation_input/${filePath}`);
 	const uploadTask = uploadBytesResumable(storageRef, file, {
 		customMetadata: {

@@ -18,34 +18,29 @@
 	GoogleAuthProvider,
 	signInWithPopup,
 	onAuthStateChanged as _onAuthStateChanged,
-	getAuth
-} from "firebase/auth";
-
-import { auth } from "@/lib/firebase/firebase";
-
-export async function onAuthStateChanged(cb) {
-	const { app } = await getAuthenticatedAppForUser();
-	const currentAuth = app ? getAuth(app) : auth;
-	return _onAuthStateChanged(currentAuth, cb);
-}
-
-export async function signInWithGoogle() {
+  } from "firebase/auth";
+  
+  import { auth } from "@/lib/firebase/firebase";
+  
+  export function onAuthStateChanged(cb) {
+	return _onAuthStateChanged(auth, cb);
+  }
+  
+  export async function signInWithGoogle() {
 	const provider = new GoogleAuthProvider();
-	const { app } = await getAuthenticatedAppForUser();
-	const currentAuth = app ? getAuth(app) : auth;
+  
 	try {
-		await signInWithPopup(currentAuth, provider);
+	  await signInWithPopup(auth, provider);
 	} catch (error) {
-		console.error("Error signing in with Google", error);
+	  console.error("Error signing in with Google", error);
 	}
-}
-
-export async function signOut() {
+  }
+  
+  export async function signOut() {
 	try {
-		const { app } = await getAuthenticatedAppForUser();
-		const currentAuth = app ? getAuth(app) : auth;
-		return currentAuth.signOut();
+	  return auth.signOut();
 	} catch (error) {
-		console.error("Error signing out with Google", error);
+	  console.error("Error signing out with Google", error);
 	}
-}
+  }
+  

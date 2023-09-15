@@ -47,7 +47,7 @@ export default async function Discussion({ params }) {
 				initialDiscussions={discussions}
 				initialDiscussionId={params.id}
 				initialMessages={messages}
-				initialUser={user}
+				initialUser={user?.uid}
 			/>
 		</main>
 	);

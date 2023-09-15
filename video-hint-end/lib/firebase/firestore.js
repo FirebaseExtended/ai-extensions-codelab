@@ -23,12 +23,12 @@ import {
 	where,
 } from "firebase/firestore";
 
-import { db } from "@/lib/firebase/firebase";
+import { db, storage } from "@/lib/firebase/firebase";
 import { getDownloadURL } from "@/lib/firebase/storage";
 
-function getVideosQuery(db, userId) {
+function getVideosQuery(authenticatedDb=null, userId) {
 	return query(
-		collection(db, "bot"),
+		collection(authenticatedDb ?? db, "bot"),
 		where("uid", "==", userId),
 		orderBy("timeCreated", "desc")
 	);
@@ -49,25 +49,25 @@ async function handleVideoDoc(storage, doc) {
 	return item;
 }
 
-export async function getVideos(db, storage, userId) {
+export async function getVideos(authenticatedDb=null, storage, userId) {
 	if (!userId) {
 		return [];
 	}
 
-	const q = getVideosQuery(db, userId);
+	const q = getVideosQuery(authenticatedDb ?? db, userId);
 	const querySnapshot = await getDocs(q);
 	const videos = querySnapshot.docs.map(doc => handleVideoDoc(storage, doc));
 	return Promise.all(videos);
 }
 
-export function getVideosSnapshot(userId, cb) {
+export function getVideosSnapshot(authenticatedDb=null, userId, cb) {
 	if (!userId) {
 		return cb([]);
 	}
 
-	const q = getVideosQuery(userId);
+	const q = getVideosQuery(authenticatedDb ?? db, userId);
 	const unsubscribe = onSnapshot(q, async querySnapshot => {
-		const results = querySnapshot.docs.map(handleVideoDoc);
+		const results = querySnapshot.docs.map((doc => handleVideoDoc(storage, doc)));
 		cb(await Promise.all(results));
 	});
 	return unsubscribe;
