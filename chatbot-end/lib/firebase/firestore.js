@@ -40,19 +40,19 @@ function formatDiscussionDoc(doc) {
 	};
 }
 
-function getDiscussionsQuery(userId) {
+function getDiscussionsQuery(db, userId) {
 	if (!userId) {
 		return null;
 	}
-	const discussionsRef = collection(db, "users", userId, "discussions");
+	const discussionsRef = collection(db, "users", userId, "discussion");
 	return query(discussionsRef, orderBy("updatedTime", "desc"));
 }
 
-async function getDiscussions(userId) {
+async function getDiscussions(db, userId) {
 	if (!userId) {
 		return [];
 	}
-	const q = getDiscussionsQuery(userId);
+	const q = getDiscussionsQuery(db, userId);
 	const querySnapshot = await getDocs(q);
 	return querySnapshot.docs.map(formatDiscussionDoc);
 }
@@ -62,7 +62,7 @@ function subscribeToDiscussions(userId, callback) {
 		return;
 	}
 
-	const q = getDiscussionsQuery(userId);
+	const q = getDiscussionsQuery(db, userId);
 
 	const unsubscribe = onSnapshot(q, querySnapshot => {
 		const discussions = querySnapshot.docs.map(formatDiscussionDoc);
@@ -76,7 +76,7 @@ function subscribeToDiscussions(userId, callback) {
 	return unsubscribe;
 }
 
-function getMessagesQuery(userId, discussionId) {
+function getMessagesQuery(db, userId, discussionId) {
 	if (!userId || !discussionId) {
 		return null;
 	}
@@ -84,7 +84,7 @@ function getMessagesQuery(userId, discussionId) {
 		db,
 		"users",
 		userId,
-		"discussions",
+		"discussion",
 		discussionId,
 		"messages"
 	);
@@ -107,12 +107,12 @@ function handleMessageDoc(doc) {
 	return item;
 }
 
-async function getMessages(userId, discussionId) {
+async function getMessages(db, userId, discussionId) {
 	if (!userId || !discussionId) {
 		return [];
 	}
 
-	const q = getMessagesQuery(userId, discussionId);
+	const q = getMessagesQuery(db, userId, discussionId);
 	const querySnapshot = await getDocs(q);
 	return querySnapshot.docs.map(handleMessageDoc);
 }
@@ -122,7 +122,7 @@ function subscribeToMessages(userId, discussionId, callback) {
 		return;
 	}
 
-	const q = getMessagesQuery(userId, discussionId);
+	const q = getMessagesQuery(db, userId, discussionId);
 
 	const unsubscribe = onSnapshot(q, querySnapshot => {
 		const messages = querySnapshot.docs.map(handleMessageDoc);
@@ -132,7 +132,7 @@ function subscribeToMessages(userId, discussionId, callback) {
 	return unsubscribe;
 }
 
-async function addNewMessage({ userId, discussionId, message }) {
+async function addNewMessage({ db, userId, discussionId, message }) {
 	if (!userId) {
 		throw new Error("userId is required");
 	}
@@ -145,7 +145,7 @@ async function addNewMessage({ userId, discussionId, message }) {
 
 	if (discussionId === "new") {
 		const newDiscussionRef = await addDoc(
-			collection(db, "users", userId, "discussions"),
+			collection(db, "users", userId, "discussion"),
 			{
 				updatedTime: serverTimestamp(),
 				latestMessage: message,
@@ -160,7 +160,7 @@ async function addNewMessage({ userId, discussionId, message }) {
 			db,
 			"users",
 			userId,
-			"discussions",
+			"discussion",
 			discussionId,
 			"messages"
 		),
@@ -170,7 +170,7 @@ async function addNewMessage({ userId, discussionId, message }) {
 		}
 	);
 
-	await updateDoc(doc(db, "users", userId, "discussions", discussionId), {
+	await updateDoc(doc(db, "users", userId, "discussion", discussionId), {
 		latestMessage: message,
 		updatedTime: serverTimestamp(),
 	});
