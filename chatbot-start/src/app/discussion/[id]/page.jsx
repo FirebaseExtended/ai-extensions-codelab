@@ -16,13 +16,17 @@
 
 import getUser from "@/lib/getUser.js";
 import { getDiscussions, getMessages } from "@/lib/firebase/firestore.js";
+import { getAuthenticatedAppForUser, app } from "@/lib/firebase/firebase";
 import Chat from "@/components/Chat";
 import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
 export default async function Discussion({ params }) {
-	const user = getUser();
+	const { app:authenticatedApp, currentUser } = await getAuthenticatedAppForUser();
+
+	const db = getFirestore(authenticatedApp ?? app);
+	const user = currentUser?.toJSON();
 	let discussions = await getDiscussions(user?.id);
 	const messages = await getMessages(user?.id, params.id);
 
