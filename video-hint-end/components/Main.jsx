@@ -41,7 +41,7 @@ async function handleExampleVideo({
 	const file = await response.arrayBuffer();
 
 	const filePath = `${crypto.randomUUID()}.${fileExtension}`;
-	const uploadTask = uploadVideo(userId, filePath, file);
+	const uploadTask = await uploadVideo(userId, filePath, file);
 	setUploading(true);
 
 	uploadTask.on(
@@ -63,7 +63,7 @@ async function handleExampleVideo({
 	);
 }
 
-export default function Chat({ initialVideos, initialUser }) {
+export default function Chat({ initialVideos, initialUserId }) {
 	const [uploadProgress, setUploadProgress] = useState(
 		new Array(exampleVideos.length).fill(0)
 	);
@@ -71,21 +71,7 @@ export default function Chat({ initialVideos, initialUser }) {
 	const [uploading, setUploading] = useState(false);
 
 	const [videos, setVideos] = useState(initialVideos);
-	const [userId, setUserId] = useState(initialUser?.id || "");
-
-	useEffect(() => {
-		const unsubscribe = onAuthStateChanged(user => {
-			if (user) {
-				setUserId(user.uid);
-			} else {
-				setUserId("");
-			}
-		});
-		return () => {
-			unsubscribe();
-		};
-	}, []);
-
+	const [userId] = useState(initialUserId || "");
 	useEffect(() => {
 		if (!userId) {
 			return;

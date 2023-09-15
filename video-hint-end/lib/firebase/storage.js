@@ -18,13 +18,15 @@ import {
 	ref,
 	uploadBytesResumable,
 	getDownloadURL as _getDownloadURL,
+	getStorage
 } from "firebase/storage";
 
-import { storage } from "@/lib/firebase/firebase";
+import { getAuthenticatedAppForUser, firebaseApp } from "@/lib/firebase/firebase";
 
-export function uploadVideo(userId, filePath, file) {
+export async function uploadVideo(userId, filePath, file) {
+	const { app:authenticatedApp } = await getAuthenticatedAppForUser();
+	const storage = getStorage(authenticatedApp ?? firebaseApp);
 	const storageRef = ref(storage, `video_annotation_input/${filePath}`);
-
 	const uploadTask = uploadBytesResumable(storageRef, file, {
 		customMetadata: {
 			uid: userId,
@@ -34,7 +36,7 @@ export function uploadVideo(userId, filePath, file) {
 	return uploadTask;
 }
 
-export async function getDownloadURL(file) {
+export async function getDownloadURL(storage, file) {
 	const storageRef = ref(storage, file);
 	const url = await _getDownloadURL(storageRef);
 	return url;

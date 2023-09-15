@@ -13,25 +13,43 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import {
+	onAuthStateChanged,
+} from "@/lib/firebase/auth.js";
+import { useEffect, useState } from 'react'
 
-import { cookies } from "next/headers";
-
+import { useRouter } from 'next/navigation'
 // This is used from next.js server components
 // it helps us get the user from the session cookie
 // This means on initial load of the page, we can display
 // user information without having to wait for the client side JS
 // Note: this code does not factor in security best practices
 
-export default function getUser() {
-	const cookieStore = cookies();
-	const userCookie = cookieStore.get("CODELAB_CHATBOT_USER");
+export default function getUser(initialUser) {
+	const [user, setUser] = useState(initialUser)
+	const router = useRouter()
 
-	if (userCookie?.value) {
-		try {
-			const parsedUser = JSON.parse(userCookie.value);
-			return parsedUser;
-		} catch (err) {
-			console.log(`Error parsing user cookie`, err);
-		}
-	}
+	useEffect(() => {
+		const unsubscribe = onAuthStateChanged((authUser) => {
+			setUser(authUser)
+		})
+
+		return () => unsubscribe()
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
+
+	useEffect(() => {
+		onAuthStateChanged((authUser) => {
+			if (user === undefined) return
+
+			// refresh when user changed to ease testing
+			if (user?.email !== authUser?.email) {
+				router.refresh()
+			}
+		})
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [user])
+
+	return user
 }
+

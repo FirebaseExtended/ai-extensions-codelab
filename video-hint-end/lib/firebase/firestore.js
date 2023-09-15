@@ -26,7 +26,7 @@ import {
 import { db } from "@/lib/firebase/firebase";
 import { getDownloadURL } from "@/lib/firebase/storage";
 
-function getVideosQuery(userId) {
+function getVideosQuery(db, userId) {
 	return query(
 		collection(db, "bot"),
 		where("uid", "==", userId),
@@ -34,29 +34,29 @@ function getVideosQuery(userId) {
 	);
 }
 
-async function handleVideoDoc(doc) {
+async function handleVideoDoc(storage, doc) {
 	const data = doc.data();
 	const item = {
 		id: doc.id,
 		...data,
-		videoUrl: await getDownloadURL(data.file),
+		videoUrl: await getDownloadURL(storage, data.file),
 		timeCreated: data.timeCreated.toDate(),
 	};
 
 	if (data.audio) {
-		item.audioUrl = await getDownloadURL(data.audio);
+		item.audioUrl = await getDownloadURL(storage, data.audio);
 	}
 	return item;
 }
 
-export async function getVideos(userId) {
+export async function getVideos(db, storage, userId) {
 	if (!userId) {
 		return [];
 	}
 
-	const q = getVideosQuery(userId);
+	const q = getVideosQuery(db, userId);
 	const querySnapshot = await getDocs(q);
-	const videos = querySnapshot.docs.map(handleVideoDoc);
+	const videos = querySnapshot.docs.map(doc => handleVideoDoc(storage, doc));
 	return Promise.all(videos);
 }
 

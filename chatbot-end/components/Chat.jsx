@@ -33,16 +33,15 @@ export default function Chat({
 	initialDiscussions,
 	initialDiscussionId,
 	initialMessages,
-	initialUser,
+	initialUserId,
 }) {
 	const router = useRouter();
-
 	const [state, setState] = useState({
 		newMessage: "",
 		// These values come from the server, and are used to initialize the state
 		discussions: initialDiscussions,
 		currentDiscussionId: initialDiscussionId,
-		userId: initialUser?.id || "",
+		userId: initialUserId || "",
 		messages: initialMessages,
 	});
 
@@ -63,25 +62,6 @@ export default function Chat({
 		router.push(`/discussion/new`);
 		router.refresh();
 	};
-
-	useEffect(() => {
-		const unsubscribe = onAuthStateChanged(user => {
-			if (user) {
-				setState(prevState => ({
-					...prevState,
-					userId: user.uid,
-				}));
-			} else {
-				setState(prevState => ({
-					...prevState,
-					userId: "",
-				}));
-			}
-		});
-		return () => {
-			unsubscribe();
-		};
-	}, []);
 
 	useEffect(() => {
 		scrollToLastMessage();
