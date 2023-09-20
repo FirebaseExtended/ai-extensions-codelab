@@ -2,6 +2,8 @@
 
 Get a brief description of a video using the Google Cloud Video Intelligence API.
 
+https://github.com/FirebaseExtended/ai-extensions-codelab/assets/381495/f3313f7f-d8a1-42a7-93d9-41658fc8ebfe
+
 ## To run with a real firebase project (recommended)
 
 Run these commands in your terminal:

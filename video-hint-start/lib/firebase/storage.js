@@ -27,7 +27,7 @@ export function uploadVideo(userId, filePath, file) {
 	// Update the code above ☝️
 }
 
-export async function getDownloadURL(file) {
+export async function getDownloadURL(storage, file) {
 	const storageRef = ref(storage, file);
 	const url = await _getDownloadURL(storageRef);
 	return url;

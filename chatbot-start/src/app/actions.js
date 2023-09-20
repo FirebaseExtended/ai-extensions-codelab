@@ -26,7 +26,7 @@ export async function handleNewMessage(data) {
 	const db = getFirestore(app);
 	const originalDiscussionId = data.get("discussionId");
 	const newDiscussionId = await addNewMessage({
-		db: db,
+		db,
 		userId: data.get("userId"),
 		discussionId: originalDiscussionId,
 		message: data.get("new-message"),

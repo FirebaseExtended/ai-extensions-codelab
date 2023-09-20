@@ -2,6 +2,8 @@
 
 A sample web app that summarizes reviews using the PaLM API and a Firebase AI extension.
 
+https://github.com/FirebaseExtended/ai-extensions-codelab/assets/381495/8d5ebd0d-e464-4f9d-9d5b-06530b8e3909
+
 ## To run with a real firebase project (recommended)
 
 Run these commands in your terminal:

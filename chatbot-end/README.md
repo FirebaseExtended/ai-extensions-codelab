@@ -2,6 +2,8 @@
 
 An AI chatbot that uses the PaLM API to answer questions.
 
+https://github.com/FirebaseExtended/ai-extensions-codelab/assets/381495/79d943cb-0117-4d79-af2a-c3228c9a4509
+
 ## To run with a real firebase project (recommended)
 
 Run these commands in your terminal:

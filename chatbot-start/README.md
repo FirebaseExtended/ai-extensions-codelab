@@ -2,6 +2,8 @@
 
 An AI chatbot that uses the PaLM API to answer questions.
 
+https://github.com/FirebaseExtended/ai-extensions-codelab/assets/381495/79d943cb-0117-4d79-af2a-c3228c9a4509
+
 ## To run with a real firebase project (recommended)
 
 Run these commands in your terminal:
@@ -48,7 +50,7 @@ firebase deploy --only extensions
 firebase deploy --only firestore:rules,storage
 ```
 
-7. In your code editor, edit the `lib/firebase/firebase-config.js` file with your Firebase [configuration](https://console.firebase.google.com/u/0/project/_/settings/general).
+7. In your code editor, edit the `lib/firebase/firebase-config.js` file with your Firebase [configuration](https://console.firebase.google.com/project/_/settings/general).
 
 8. Back in your terminal, run the web app:
 
@@ -56,7 +58,7 @@ firebase deploy --only firestore:rules,storage
 firebase emulators:start --only hosting
 ```
 
-9. Open [http://localhost:5000/](http://localhost:5000/) in your browser (or whatever URL is presented to your in your terminal) to see the result.
+9. Open [http://localhost:5000/](http://localhost:5000/) in your browser (or whatever port is presented to your in your terminal) to see the result.
 
 ## To run locally with mock data (not recommended)
 

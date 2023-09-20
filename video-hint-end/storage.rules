@@ -10,5 +10,10 @@ service firebase.storage {
       // uid on the video metadata.
       allow read: if request.auth.uid == resource.metadata.uid;
     }
+
+    // Allow authenticated users to read MP3 files
+    match /tts/{mp3_file} {
+      allow read: if request.auth != null;
+    }
   }
 }

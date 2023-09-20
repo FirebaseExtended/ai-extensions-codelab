@@ -77,7 +77,7 @@ function subscribeToDiscussions(userId, callback) {
 }
 
 // Replace the getMessagesQuery() function below ⬇️
-function getMessagesQuery(db,userId, discussionId) {
+function getMessagesQuery(db, userId, discussionId) {
 	return {};
 }
 // Replace the getMessagesQuery() function above ⬆️
@@ -93,7 +93,7 @@ async function getMessages(db, userId, discussionId) {
 		return [];
 	}
 
-	const q = getMessagesQuery(db,userId, discussionId);
+	const q = getMessagesQuery(db, userId, discussionId);
 	const querySnapshot = await getDocs(q);
 	return querySnapshot.docs.map(handleMessageDoc);
 }
@@ -103,7 +103,7 @@ function subscribeToMessages(userId, discussionId, callback) {
 		return;
 	}
 
-	const q = getMessagesQuery(db,userId, discussionId);
+	const q = getMessagesQuery(db, userId, discussionId);
 
 	const unsubscribe = onSnapshot(q, querySnapshot => {
 		const messages = querySnapshot.docs.map(handleMessageDoc);
@@ -113,7 +113,7 @@ function subscribeToMessages(userId, discussionId, callback) {
 	return unsubscribe;
 }
 
-async function addNewMessage({ userId, discussionId, message }) {
+async function addNewMessage({ db, userId, discussionId, message }) {
 	if (!userId) {
 		throw new Error("userId is required");
 	}
@@ -138,8 +138,6 @@ async function addNewMessage({ userId, discussionId, message }) {
 
 	// Insert your code below ⬇️
 	// Insert your code above ⬆️
-
-	// Don't change the code below
 	return discussionId;
 }
 

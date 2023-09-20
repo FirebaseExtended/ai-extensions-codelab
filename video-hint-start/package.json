@@ -10,8 +10,9 @@
 	},
 	"dependencies": {
 		"encoding": "^0.1.13",
-		"firebase": "^10.1.0",
-		"next": "13.4.16",
+		"firebase": "^10.4.0",
+		"firebase-admin": "^11.10.1",
+		"next": "13.4.19",
 		"react": "18.2.0",
 		"react-dom": "18.2.0"
 	},
@@ -21,6 +22,7 @@
 		"path": false,
 		"child_process": false,
 		"net": false,
-		"tls": false
+		"tls": false,
+		"request": false
 	}
 }
