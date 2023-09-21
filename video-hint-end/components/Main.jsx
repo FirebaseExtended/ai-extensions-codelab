@@ -42,7 +42,7 @@ async function handleExampleVideo({
 	const file = await response.arrayBuffer();
 
 	const filePath = `${crypto.randomUUID()}.${fileExtension}`;
-	const uploadTask = await uploadVideo(userId, filePath, file);
+	const uploadTask = uploadVideo(userId, filePath, file);
 	setUploading(true);
 
 	uploadTask.on(
@@ -66,28 +66,28 @@ async function handleExampleVideo({
 function useUserSession(initialUserId) {
 	// The initialUser comes from the server via a server component
 	const [userId, setUserId] = useState(initialUserId);
-	const router = useRouter()
+	const router = useRouter();
 
 	useEffect(() => {
-		const unsubscribe = onAuthStateChanged((authUser) => {
-			setUserId(authUser ? authUser.uid : "")
-		})
+		const unsubscribe = onAuthStateChanged(authUser => {
+			setUserId(authUser ? authUser.uid : "");
+		});
 
-		return () => unsubscribe()
+		return () => unsubscribe();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [])
+	}, []);
 
 	useEffect(() => {
-		onAuthStateChanged((authUser) => {
+		onAuthStateChanged(authUser => {
 			if (userId === undefined) return "";
 
 			// refresh when user changed to ease testing
 			if (userId !== authUser?.uid) {
-				router.refresh()
+				router.refresh();
 			}
-		})
+		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [userId])
+	}, [userId]);
 
 	return userId;
 }
