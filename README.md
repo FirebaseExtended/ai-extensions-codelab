@@ -1,3 +1,7 @@
+# Deprecated
+
+This codelab has been deprecated in favor of the [Build AI-powered web apps with Firebase Extensions for the Gemini API](https://firebase.google.com/codelabs/gemini-api-extensions-web) codelab. Please see that codelab for more information.
+
 # Firebase AI Extension Codelab
 
 This is the code for the Firebase AI Extensions Codelab. It contains three web apps which you work on throughout the codelab.
